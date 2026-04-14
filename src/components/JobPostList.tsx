@@ -1,5 +1,5 @@
-import { type JobPost } from '@/types/jobPost';
-import { JobPostCard } from './JobPostCard';
+import { type JobPost } from "@/types/jobPost";
+import { JobPostCard } from "./JobPostCard";
 
 interface JobPostListProps {
   jobPosts: JobPost[];
@@ -7,7 +7,7 @@ interface JobPostListProps {
   onCardClick: (jobPost: JobPost) => void;
 }
 
-function LoadingState(): JSX.Element {
+function LoadingState(): React.ReactElement {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {[1, 2, 3, 4, 5, 6].map((key) => (
@@ -25,13 +25,14 @@ function LoadingState(): JSX.Element {
   );
 }
 
-function EmptyState(): JSX.Element {
+function EmptyState(): React.ReactElement {
   return (
     <div className="flex flex-col items-center justify-center py-24 text-center text-muted-foreground">
       <div className="text-5xl mb-4">📋</div>
       <p className="text-lg font-medium">No job posts yet.</p>
       <p className="text-sm mt-1">
-        Use the <span className="font-semibold">+ Post a Job</span> button to publish the first listing.
+        Use the <span className="font-semibold">+ Post a Job</span> button to
+        publish the first listing.
       </p>
     </div>
   );
@@ -41,7 +42,7 @@ export function JobPostList({
   jobPosts,
   isLoading,
   onCardClick,
-}: JobPostListProps): JSX.Element {
+}: JobPostListProps): React.ReactElement {
   if (isLoading) {
     return (
       <section aria-label="Job posts list">

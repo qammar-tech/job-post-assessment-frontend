@@ -1,6 +1,6 @@
-import { JobPostsPage } from '@/pages/JobPostsPage';
+import { JobPostsPage } from "@/pages/JobPostsPage";
 
-function App(): JSX.Element {
+function App(): React.ReactElement {
   return <JobPostsPage />;
 }
 

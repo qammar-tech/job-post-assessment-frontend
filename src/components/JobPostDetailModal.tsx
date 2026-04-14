@@ -3,14 +3,14 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
-import { type JobPost } from '@/types/jobPost';
+} from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
+import { type JobPost } from "@/types/jobPost";
 import {
   formatDate,
   SCHEDULE_TYPE_BADGE_VARIANT,
   SCHEDULE_TYPE_LABEL,
-} from '@/lib/jobPost.utils';
+} from "@/lib/jobPost.utils";
 
 interface JobPostDetailModalProps {
   jobPost: JobPost | null;
@@ -22,11 +22,15 @@ interface DetailRowProps {
   value: string;
 }
 
-function DetailRow({ label, value }: DetailRowProps): JSX.Element {
+function DetailRow({ label, value }: DetailRowProps): React.ReactElement {
   return (
     <div className="flex flex-col gap-0.5 sm:grid sm:grid-cols-3 sm:gap-4 py-3 border-b border-border/50 last:border-0">
-      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{label}</span>
-      <span className="col-span-2 text-sm text-foreground font-medium">{value}</span>
+      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+        {label}
+      </span>
+      <span className="col-span-2 text-sm text-foreground font-medium">
+        {value}
+      </span>
     </div>
   );
 }
@@ -34,7 +38,7 @@ function DetailRow({ label, value }: DetailRowProps): JSX.Element {
 export function JobPostDetailModal({
   jobPost,
   onClose,
-}: JobPostDetailModalProps): JSX.Element {
+}: JobPostDetailModalProps): React.ReactElement {
   return (
     <Dialog open={jobPost !== null} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="w-[95vw] max-w-[95vw] sm:max-w-xl md:max-w-2xl max-h-[92vh] overflow-y-auto">

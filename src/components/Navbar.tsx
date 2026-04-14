@@ -1,10 +1,10 @@
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 
 interface NavbarProps {
   onPostJob: () => void;
 }
 
-export function Navbar({ onPostJob }: NavbarProps): JSX.Element {
+export function Navbar({ onPostJob }: NavbarProps): React.ReactElement {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 shadow-sm shadow-primary/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
@@ -22,7 +22,11 @@ export function Navbar({ onPostJob }: NavbarProps): JSX.Element {
           </div>
         </div>
 
-        <Button onClick={onPostJob} size="sm" className="shadow-sm shadow-primary/20 gap-1">
+        <Button
+          onClick={onPostJob}
+          size="sm"
+          className="shadow-sm shadow-primary/20 gap-1"
+        >
           <span className="text-base leading-none">+</span> Post a Job
         </Button>
       </div>

@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { getJobPosts } from '@/api/jobPosts';
-import { Navbar } from '@/components/Navbar';
-import { JobPostList } from '@/components/JobPostList';
-import { PostJobModal } from '@/components/PostJobModal';
-import { JobPostDetailModal } from '@/components/JobPostDetailModal';
-import { type JobPost } from '@/types/jobPost';
+import { useEffect, useState } from "react";
+import { getJobPosts } from "@/api/jobPosts";
+import { Navbar } from "@/components/Navbar";
+import { JobPostList } from "@/components/JobPostList";
+import { PostJobModal } from "@/components/PostJobModal";
+import { JobPostDetailModal } from "@/components/JobPostDetailModal";
+import { type JobPost } from "@/types/jobPost";
 
-export function JobPostsPage(): JSX.Element {
+export function JobPostsPage(): React.ReactElement {
   const [jobPosts, setJobPosts] = useState<JobPost[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState<string | null>(null);
@@ -21,7 +21,7 @@ export function JobPostsPage(): JSX.Element {
       setJobPosts(response.data);
     } catch (error) {
       setFetchError(
-        error instanceof Error ? error.message : 'Failed to load job posts.',
+        error instanceof Error ? error.message : "Failed to load job posts.",
       );
     } finally {
       setIsLoading(false);
@@ -55,8 +55,8 @@ export function JobPostsPage(): JSX.Element {
           </h1>
           <p className="text-muted-foreground mt-2 text-base">
             {jobPosts.length > 0
-              ? `${jobPosts.length} position${jobPosts.length === 1 ? '' : 's'} available — click any card to view details`
-              : 'No listings yet. Be the first to post a position.'}
+              ? `${jobPosts.length} position${jobPosts.length === 1 ? "" : "s"} available — click any card to view details`
+              : "No listings yet. Be the first to post a position."}
           </p>
         </div>
       </div>

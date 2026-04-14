@@ -1,17 +1,17 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { createJobPost } from '@/api/jobPosts';
-import { ScheduleType, type CreateJobPostPayload } from '@/types/jobPost';
+} from "@/components/ui/select";
+import { createJobPost } from "@/api/jobPosts";
+import { ScheduleType, type CreateJobPostPayload } from "@/types/jobPost";
 
 interface JobPostFormProps {
   onSuccess: () => void;
@@ -20,20 +20,22 @@ interface JobPostFormProps {
 type FieldErrors = Partial<Record<keyof CreateJobPostPayload, string>>;
 
 const EMPTY_FORM: CreateJobPostPayload = {
-  jobTitle: '',
-  specialty: '',
-  location: '',
+  jobTitle: "",
+  specialty: "",
+  location: "",
 };
 
 function validateJobPostForm(data: CreateJobPostPayload): FieldErrors {
   const errors: FieldErrors = {};
-  if (!data.jobTitle.trim()) errors.jobTitle = 'Job title is required';
-  if (!data.specialty.trim()) errors.specialty = 'Specialty is required';
-  if (!data.location.trim()) errors.location = 'Location is required';
+  if (!data.jobTitle.trim()) errors.jobTitle = "Job title is required";
+  if (!data.specialty.trim()) errors.specialty = "Specialty is required";
+  if (!data.location.trim()) errors.location = "Location is required";
   return errors;
 }
 
-export function JobPostForm({ onSuccess }: JobPostFormProps): JSX.Element {
+export function JobPostForm({
+  onSuccess,
+}: JobPostFormProps): React.ReactElement {
   const [formData, setFormData] = useState<CreateJobPostPayload>(EMPTY_FORM);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -64,11 +66,11 @@ export function JobPostForm({ onSuccess }: JobPostFormProps): JSX.Element {
     setIsSubmitting(true);
     try {
       await createJobPost(formData);
-      setSuccessMessage('Job post created successfully');
+      setSuccessMessage("Job post created successfully");
       setFormData(EMPTY_FORM);
       onSuccess();
     } catch (error) {
-      setApiError(error instanceof Error ? error.message : 'Submission failed');
+      setApiError(error instanceof Error ? error.message : "Submission failed");
     } finally {
       setIsSubmitting(false);
     }
@@ -99,7 +101,7 @@ export function JobPostForm({ onSuccess }: JobPostFormProps): JSX.Element {
             <Input
               id="jobTitle"
               value={formData.jobTitle}
-              onChange={(e) => handleInputChange('jobTitle', e.target.value)}
+              onChange={(e) => handleInputChange("jobTitle", e.target.value)}
               placeholder="e.g. Registered Nurse"
             />
             {fieldErrors.jobTitle && (
@@ -114,11 +116,13 @@ export function JobPostForm({ onSuccess }: JobPostFormProps): JSX.Element {
             <Input
               id="specialty"
               value={formData.specialty}
-              onChange={(e) => handleInputChange('specialty', e.target.value)}
+              onChange={(e) => handleInputChange("specialty", e.target.value)}
               placeholder="e.g. Cardiology"
             />
             {fieldErrors.specialty && (
-              <p className="text-xs text-destructive">{fieldErrors.specialty}</p>
+              <p className="text-xs text-destructive">
+                {fieldErrors.specialty}
+              </p>
             )}
           </div>
 
@@ -129,7 +133,7 @@ export function JobPostForm({ onSuccess }: JobPostFormProps): JSX.Element {
             <Input
               id="location"
               value={formData.location}
-              onChange={(e) => handleInputChange('location', e.target.value)}
+              onChange={(e) => handleInputChange("location", e.target.value)}
               placeholder="e.g. New York, NY"
             />
             {fieldErrors.location && (
@@ -147,19 +151,25 @@ export function JobPostForm({ onSuccess }: JobPostFormProps): JSX.Element {
         </legend>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           <div className="space-y-2">
-            <Label htmlFor="scheduleType" className="font-medium">Schedule Type</Label>
+            <Label htmlFor="scheduleType" className="font-medium">
+              Schedule Type
+            </Label>
             <Select
-              value={formData.scheduleType ?? ''}
+              value={formData.scheduleType ?? ""}
               onValueChange={(value) =>
-                handleInputChange('scheduleType', value as ScheduleType)
+                handleInputChange("scheduleType", value as ScheduleType)
               }
             >
               <SelectTrigger id="scheduleType">
                 <SelectValue placeholder="Select schedule" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={ScheduleType.FULL_TIME}>Full Time</SelectItem>
-                <SelectItem value={ScheduleType.PART_TIME}>Part Time</SelectItem>
+                <SelectItem value={ScheduleType.FULL_TIME}>
+                  Full Time
+                </SelectItem>
+                <SelectItem value={ScheduleType.PART_TIME}>
+                  Part Time
+                </SelectItem>
                 <SelectItem value={ScheduleType.CONTRACT}>Contract</SelectItem>
                 <SelectItem value={ScheduleType.PER_DIEM}>Per Diem</SelectItem>
               </SelectContent>
@@ -167,42 +177,54 @@ export function JobPostForm({ onSuccess }: JobPostFormProps): JSX.Element {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="compensation" className="font-medium">Compensation</Label>
+            <Label htmlFor="compensation" className="font-medium">
+              Compensation
+            </Label>
             <Input
               id="compensation"
-              value={formData.compensation ?? ''}
-              onChange={(e) => handleInputChange('compensation', e.target.value)}
+              value={formData.compensation ?? ""}
+              onChange={(e) =>
+                handleInputChange("compensation", e.target.value)
+              }
               placeholder="e.g. $80,000/yr"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="startDate" className="font-medium">Start Date</Label>
+            <Label htmlFor="startDate" className="font-medium">
+              Start Date
+            </Label>
             <Input
               id="startDate"
               type="date"
-              value={formData.startDate ?? ''}
-              onChange={(e) => handleInputChange('startDate', e.target.value)}
+              value={formData.startDate ?? ""}
+              onChange={(e) => handleInputChange("startDate", e.target.value)}
             />
           </div>
         </div>
       </fieldset>
 
       <div className="space-y-2">
-        <Label htmlFor="description" className="font-medium">Description</Label>
+        <Label htmlFor="description" className="font-medium">
+          Description
+        </Label>
         <Textarea
           id="description"
           rows={5}
-          value={formData.description ?? ''}
-          onChange={(e) => handleInputChange('description', e.target.value)}
+          value={formData.description ?? ""}
+          onChange={(e) => handleInputChange("description", e.target.value)}
           placeholder="Describe the role, requirements, and responsibilities..."
           className="resize-none"
         />
       </div>
 
       <div className="flex justify-end pt-2 border-t border-border/50">
-        <Button type="submit" disabled={isSubmitting} className="px-8 shadow-sm shadow-primary/20">
-          {isSubmitting ? 'Submitting...' : 'Post Job'}
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="px-8 shadow-sm shadow-primary/20"
+        >
+          {isSubmitting ? "Submitting..." : "Post Job"}
         </Button>
       </div>
     </form>

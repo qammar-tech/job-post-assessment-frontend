@@ -1,30 +1,28 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { type JobPost } from '@/types/jobPost';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { type JobPost } from "@/types/jobPost";
 import {
   formatDate,
   SCHEDULE_TYPE_BADGE_VARIANT,
   SCHEDULE_TYPE_LABEL,
-} from '@/lib/jobPost.utils';
+} from "@/lib/jobPost.utils";
 
 interface JobPostCardProps {
   jobPost: JobPost;
   onClick: (jobPost: JobPost) => void;
 }
 
-export function JobPostCard({ jobPost, onClick }: JobPostCardProps): JSX.Element {
+export function JobPostCard({
+  jobPost,
+  onClick,
+}: JobPostCardProps): React.ReactElement {
   return (
     <Card
       className="cursor-pointer transition-all duration-200 hover:shadow-lg hover:shadow-primary/10 hover:border-primary/50 hover:-translate-y-0.5 group"
       onClick={() => onClick(jobPost)}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' && onClick(jobPost)}
+      onKeyDown={(e) => e.key === "Enter" && onClick(jobPost)}
       aria-label={`View details for ${jobPost.jobTitle}`}
     >
       <CardHeader className="pb-3">
@@ -33,7 +31,10 @@ export function JobPostCard({ jobPost, onClick }: JobPostCardProps): JSX.Element
             {jobPost.jobTitle}
           </CardTitle>
           {jobPost.scheduleType && (
-            <Badge variant={SCHEDULE_TYPE_BADGE_VARIANT[jobPost.scheduleType]} className="shrink-0">
+            <Badge
+              variant={SCHEDULE_TYPE_BADGE_VARIANT[jobPost.scheduleType]}
+              className="shrink-0"
+            >
               {SCHEDULE_TYPE_LABEL[jobPost.scheduleType]}
             </Badge>
           )}
@@ -41,22 +42,24 @@ export function JobPostCard({ jobPost, onClick }: JobPostCardProps): JSX.Element
       </CardHeader>
       <CardContent className="space-y-2 text-sm text-muted-foreground">
         <p>
-          <span className="font-medium text-foreground/80">Specialty:</span>{' '}
+          <span className="font-medium text-foreground/80">Specialty:</span>{" "}
           {jobPost.specialty}
         </p>
         <p>
-          <span className="font-medium text-foreground/80">Location:</span>{' '}
+          <span className="font-medium text-foreground/80">Location:</span>{" "}
           {jobPost.location}
         </p>
         {jobPost.compensation && (
           <p>
-            <span className="font-medium text-foreground/80">Compensation:</span>{' '}
+            <span className="font-medium text-foreground/80">
+              Compensation:
+            </span>{" "}
             {jobPost.compensation}
           </p>
         )}
         {jobPost.startDate && (
           <p>
-            <span className="font-medium text-foreground/80">Start Date:</span>{' '}
+            <span className="font-medium text-foreground/80">Start Date:</span>{" "}
             {formatDate(jobPost.startDate)}
           </p>
         )}
