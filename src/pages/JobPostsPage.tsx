@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
-import { getJobPosts } from "@/api/jobPosts";
+import { getJobPosts, updateJobPostStatus } from "@/api/jobPosts";
 import { Navbar } from "@/components/Navbar";
 import { JobPostList } from "@/components/JobPostList";
 import { PostJobModal } from "@/components/PostJobModal";
 import { JobPostDetailModal } from "@/components/JobPostDetailModal";
-import { type JobPost } from "@/types/jobPost";
+import { type JobPost, JobPostStatus } from "@/types/jobPost";
 
 export function JobPostsPage(): React.ReactElement {
   const [jobPosts, setJobPosts] = useState<JobPost[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState<string | null>(null);
+  const [statusUpdateError, setStatusUpdateError] = useState<string | null>(
+    null,
+  );
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
   const [selectedJobPost, setSelectedJobPost] = useState<JobPost | null>(null);
 
@@ -25,6 +28,21 @@ export function JobPostsPage(): React.ReactElement {
       );
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  async function handleStatusChange(
+    id: string,
+    newStatus: JobPostStatus,
+  ): Promise<void> {
+    setStatusUpdateError(null);
+    try {
+      await updateJobPostStatus(id, { status: newStatus });
+      await fetchJobPosts();
+    } catch (error) {
+      setStatusUpdateError(
+        error instanceof Error ? error.message : "Failed to update status.",
+      );
     }
   }
 
@@ -54,8 +72,8 @@ export function JobPostsPage(): React.ReactElement {
             Open Positions
           </h1>
           <p className="text-muted-foreground mt-2 text-base">
-            {jobPosts.length > 0
-              ? `${jobPosts.length} position${jobPosts.length === 1 ? "" : "s"} available — click any card to view details`
+            {jobPosts?.length > 0
+              ? `${jobPosts?.length} position${jobPosts?.length === 1 ? "" : "s"} available — click any card to view details`
               : "No listings yet. Be the first to post a position."}
           </p>
         </div>
@@ -67,11 +85,15 @@ export function JobPostsPage(): React.ReactElement {
             {fetchError}
           </div>
         )}
+        {statusUpdateError && (
+          <p className="text-red-500 text-sm mt-2 mb-4">{statusUpdateError}</p>
+        )}
 
         <JobPostList
           jobPosts={jobPosts}
           isLoading={isLoading}
           onCardClick={handleCardClick}
+          onStatusChange={handleStatusChange}
         />
       </div>
 
@@ -84,6 +106,7 @@ export function JobPostsPage(): React.ReactElement {
       <JobPostDetailModal
         jobPost={selectedJobPost}
         onClose={handleDetailModalClose}
+        onStatusChange={handleStatusChange}
       />
     </div>
   );

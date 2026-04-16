@@ -5,6 +5,12 @@ export enum ScheduleType {
   PER_DIEM = 'PER_DIEM',
 }
 
+export enum JobPostStatus {
+  DRAFT = 'DRAFT',
+  OPEN = 'OPEN',
+  CLOSED = 'CLOSED',
+}
+
 export interface JobPost {
   readonly id: string;
   jobTitle: string;
@@ -14,6 +20,7 @@ export interface JobPost {
   compensation?: string;
   startDate?: string;
   description?: string;
+  status: JobPostStatus;
   readonly createdAt: string;
   readonly updatedAt: string;
 }
@@ -40,4 +47,8 @@ export interface ApiErrorResponse {
   statusCode: number;
   errors?: string[];
   message?: string;
+}
+
+export interface UpdateJobPostStatusPayload {
+  status: JobPostStatus;
 }

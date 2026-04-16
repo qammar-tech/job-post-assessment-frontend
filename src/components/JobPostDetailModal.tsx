@@ -5,16 +5,27 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { type JobPost } from "@/types/jobPost";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { type JobPost, JobPostStatus } from "@/types/jobPost";
 import {
   formatDate,
+  isOpenOptionDisabled,
   SCHEDULE_TYPE_BADGE_VARIANT,
   SCHEDULE_TYPE_LABEL,
+  STATUS_BADGE_VARIANT,
+  STATUS_LABEL,
 } from "@/lib/jobPost.utils";
 
 interface JobPostDetailModalProps {
   jobPost: JobPost | null;
   onClose: () => void;
+  onStatusChange: (id: string, newStatus: JobPostStatus) => void;
 }
 
 interface DetailRowProps {
@@ -38,6 +49,7 @@ function DetailRow({ label, value }: DetailRowProps): React.ReactElement {
 export function JobPostDetailModal({
   jobPost,
   onClose,
+  onStatusChange,
 }: JobPostDetailModalProps): React.ReactElement {
   return (
     <Dialog open={jobPost !== null} onOpenChange={(open) => !open && onClose()}>
@@ -45,14 +57,16 @@ export function JobPostDetailModal({
         {jobPost && (
           <>
             <DialogHeader className="pb-4 border-b border-border/60">
-              <div className="flex items-start gap-3 flex-wrap pr-8">
-                <DialogTitle className="text-2xl font-bold leading-snug flex-1">
-                  {jobPost.jobTitle}
-                </DialogTitle>
+              <DialogTitle className="text-2xl font-bold leading-snug pr-8">
+                {jobPost.jobTitle}
+              </DialogTitle>
+              <div className="flex items-center gap-2 mt-1">
+                <Badge variant={STATUS_BADGE_VARIANT[jobPost.status]}>
+                  {STATUS_LABEL[jobPost.status]}
+                </Badge>
                 {jobPost.scheduleType && (
                   <Badge
                     variant={SCHEDULE_TYPE_BADGE_VARIANT[jobPost.scheduleType]}
-                    className="mt-1 shrink-0"
                   >
                     {SCHEDULE_TYPE_LABEL[jobPost.scheduleType]}
                   </Badge>
@@ -82,6 +96,36 @@ export function JobPostDetailModal({
                   </p>
                 </div>
               )}
+            </div>
+
+            <div className="flex items-center gap-3 pt-2">
+              <span className="text-sm font-medium text-muted-foreground">
+                Change status:
+              </span>
+              <Select
+                value={jobPost.status}
+                onValueChange={(value) =>
+                  onStatusChange(jobPost.id, value as JobPostStatus)
+                }
+              >
+                <SelectTrigger className="w-36">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.values(JobPostStatus).map((status) => (
+                    <SelectItem
+                      key={status}
+                      value={status}
+                      disabled={
+                        status === JobPostStatus.OPEN &&
+                        isOpenOptionDisabled(jobPost)
+                      }
+                    >
+                      {STATUS_LABEL[status]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <p className="text-xs text-muted-foreground pt-4 border-t border-border/50">

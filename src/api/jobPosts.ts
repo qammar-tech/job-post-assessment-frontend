@@ -1,5 +1,10 @@
 import axios from 'axios';
-import type { ApiResponse, CreateJobPostPayload, JobPost } from '@/types/jobPost';
+import type {
+  ApiResponse,
+  CreateJobPostPayload,
+  JobPost,
+  UpdateJobPostStatusPayload,
+} from '@/types/jobPost';
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -34,6 +39,21 @@ export async function createJobPost(
 export async function getJobPosts(): Promise<ApiResponse<JobPost[]>> {
   try {
     const response = await apiClient.get<ApiResponse<JobPost[]>>('/job-posts');
+    return response.data;
+  } catch (error) {
+    throw new Error(extractErrorMessage(error));
+  }
+}
+
+export async function updateJobPostStatus(
+  id: string,
+  payload: UpdateJobPostStatusPayload,
+): Promise<ApiResponse<JobPost>> {
+  try {
+    const response = await apiClient.patch<ApiResponse<JobPost>>(
+      `/job-posts/${id}/status`,
+      payload,
+    );
     return response.data;
   } catch (error) {
     throw new Error(extractErrorMessage(error));

@@ -1,4 +1,4 @@
-import { ScheduleType } from '@/types/jobPost';
+import { type JobPost, JobPostStatus, ScheduleType } from '@/types/jobPost';
 
 export const SCHEDULE_TYPE_LABEL: Record<ScheduleType, string> = {
   [ScheduleType.FULL_TIME]: 'Full Time',
@@ -23,4 +23,27 @@ export function formatDate(isoDateString: string): string {
     day: 'numeric',
     year: 'numeric',
   }).format(new Date(isoDateString));
+}
+
+export const STATUS_BADGE_VARIANT: Record<
+  JobPostStatus,
+  'default' | 'secondary' | 'outline' | 'destructive'
+> = {
+  [JobPostStatus.DRAFT]: 'secondary',
+  [JobPostStatus.OPEN]: 'default',
+  [JobPostStatus.CLOSED]: 'destructive',
+};
+
+export const STATUS_LABEL: Record<JobPostStatus, string> = {
+  [JobPostStatus.DRAFT]: 'Draft',
+  [JobPostStatus.OPEN]: 'Open',
+  [JobPostStatus.CLOSED]: 'Closed',
+};
+
+export function isOpenOptionDisabled(jobPost: JobPost): boolean {
+  return (
+    !jobPost.jobTitle?.trim() ||
+    !jobPost.specialty?.trim() ||
+    !jobPost.location?.trim()
+  );
 }

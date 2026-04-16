@@ -1,10 +1,11 @@
-import { type JobPost } from "@/types/jobPost";
+import { type JobPost, JobPostStatus } from "@/types/jobPost";
 import { JobPostCard } from "./JobPostCard";
 
 interface JobPostListProps {
   jobPosts: JobPost[];
   isLoading: boolean;
   onCardClick: (jobPost: JobPost) => void;
+  onStatusChange: (id: string, newStatus: JobPostStatus) => void;
 }
 
 function LoadingState(): React.ReactElement {
@@ -42,6 +43,7 @@ export function JobPostList({
   jobPosts,
   isLoading,
   onCardClick,
+  onStatusChange,
 }: JobPostListProps): React.ReactElement {
   if (isLoading) {
     return (
@@ -51,7 +53,7 @@ export function JobPostList({
     );
   }
 
-  if (jobPosts.length === 0) {
+  if (jobPosts?.length === 0) {
     return (
       <section aria-label="Job posts list">
         <EmptyState />
@@ -64,8 +66,13 @@ export function JobPostList({
       aria-label="Job posts list"
       className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
     >
-      {jobPosts.map((jobPost) => (
-        <JobPostCard key={jobPost.id} jobPost={jobPost} onClick={onCardClick} />
+      {jobPosts?.map((jobPost) => (
+        <JobPostCard
+          key={jobPost.id}
+          jobPost={jobPost}
+          onClick={onCardClick}
+          onStatusChange={onStatusChange}
+        />
       ))}
     </section>
   );

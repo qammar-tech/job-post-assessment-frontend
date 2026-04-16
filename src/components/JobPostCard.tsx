@@ -1,20 +1,32 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { type JobPost } from "@/types/jobPost";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { type JobPost, JobPostStatus } from "@/types/jobPost";
 import {
   formatDate,
+  isOpenOptionDisabled,
   SCHEDULE_TYPE_BADGE_VARIANT,
   SCHEDULE_TYPE_LABEL,
+  STATUS_BADGE_VARIANT,
+  STATUS_LABEL,
 } from "@/lib/jobPost.utils";
 
 interface JobPostCardProps {
   jobPost: JobPost;
   onClick: (jobPost: JobPost) => void;
+  onStatusChange: (id: string, newStatus: JobPostStatus) => void;
 }
 
 export function JobPostCard({
   jobPost,
   onClick,
+  onStatusChange,
 }: JobPostCardProps): React.ReactElement {
   return (
     <Card
@@ -30,14 +42,18 @@ export function JobPostCard({
           <CardTitle className="text-base font-semibold leading-snug group-hover:text-primary transition-colors">
             {jobPost.jobTitle}
           </CardTitle>
-          {jobPost.scheduleType && (
-            <Badge
-              variant={SCHEDULE_TYPE_BADGE_VARIANT[jobPost.scheduleType]}
-              className="shrink-0"
-            >
-              {SCHEDULE_TYPE_LABEL[jobPost.scheduleType]}
+          <div className="flex items-center gap-1.5 shrink-0">
+            <Badge variant={STATUS_BADGE_VARIANT[jobPost.status]}>
+              {STATUS_LABEL[jobPost.status]}
             </Badge>
-          )}
+            {jobPost.scheduleType && (
+              <Badge
+                variant={SCHEDULE_TYPE_BADGE_VARIANT[jobPost.scheduleType]}
+              >
+                {SCHEDULE_TYPE_LABEL[jobPost.scheduleType]}
+              </Badge>
+            )}
+          </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-2 text-sm text-muted-foreground">
@@ -66,6 +82,38 @@ export function JobPostCard({
         <p className="pt-2 text-xs text-primary/60 font-medium group-hover:text-primary transition-colors">
           View full details →
         </p>
+        <div
+          onClick={(e) => e.stopPropagation()}
+          onKeyDown={(e) => e.stopPropagation()}
+        >
+          <Select
+            value={jobPost.status}
+            onValueChange={(value) =>
+              onStatusChange(jobPost.id, value as JobPostStatus)
+            }
+          >
+            <SelectTrigger className="w-36">
+              <SelectValue placeholder="Change status" />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.values(JobPostStatus).map((status) =>
+                status === JobPostStatus.OPEN ? (
+                  <SelectItem
+                    key={status}
+                    value={status}
+                    disabled={isOpenOptionDisabled(jobPost)}
+                  >
+                    {STATUS_LABEL[status]}
+                  </SelectItem>
+                ) : (
+                  <SelectItem key={status} value={status}>
+                    {STATUS_LABEL[status]}
+                  </SelectItem>
+                ),
+              )}
+            </SelectContent>
+          </Select>
+        </div>
       </CardContent>
     </Card>
   );
