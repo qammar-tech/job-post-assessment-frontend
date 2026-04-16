@@ -36,6 +36,7 @@ export function JobPostsPage(): React.ReactElement {
     newStatus: JobPostStatus,
   ): Promise<void> {
     setStatusUpdateError(null);
+    setSelectedJobPost(null);
     try {
       await updateJobPostStatus(id, { status: newStatus });
       await fetchJobPosts();
