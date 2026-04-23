@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -21,12 +22,14 @@ interface JobPostCardProps {
   jobPost: JobPost;
   onClick: (jobPost: JobPost) => void;
   onStatusChange: (id: string, newStatus: JobPostStatus) => void;
+  onViewApplicants: (jobPost: JobPost) => void;
 }
 
 export function JobPostCard({
   jobPost,
   onClick,
   onStatusChange,
+  onViewApplicants,
 }: JobPostCardProps): React.ReactElement {
   return (
     <Card
@@ -83,6 +86,7 @@ export function JobPostCard({
           View full details →
         </p>
         <div
+          className="flex items-center gap-2 flex-wrap"
           onClick={(e) => e.stopPropagation()}
           onKeyDown={(e) => e.stopPropagation()}
         >
@@ -113,6 +117,13 @@ export function JobPostCard({
               )}
             </SelectContent>
           </Select>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onViewApplicants(jobPost)}
+          >
+            View Applicants
+          </Button>
         </div>
       </CardContent>
     </Card>

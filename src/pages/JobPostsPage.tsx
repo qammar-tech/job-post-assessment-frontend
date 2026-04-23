@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { JobPostList } from "@/components/JobPostList";
 import { PostJobModal } from "@/components/PostJobModal";
 import { JobPostDetailModal } from "@/components/JobPostDetailModal";
+import { ApplicantsModal } from "@/components/ApplicantsModal";
 import { type JobPost, JobPostStatus } from "@/types/jobPost";
 
 export function JobPostsPage(): React.ReactElement {
@@ -15,6 +16,7 @@ export function JobPostsPage(): React.ReactElement {
   );
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
   const [selectedJobPost, setSelectedJobPost] = useState<JobPost | null>(null);
+  const [applicantsJobPost, setApplicantsJobPost] = useState<JobPost | null>(null);
 
   async function fetchJobPosts(): Promise<void> {
     setIsLoading(true);
@@ -59,6 +61,15 @@ export function JobPostsPage(): React.ReactElement {
     setSelectedJobPost(null);
   }
 
+  function handleViewApplicants(jobPost: JobPost): void {
+    setSelectedJobPost(null);
+    setApplicantsJobPost(jobPost);
+  }
+
+  function handleApplicantsModalClose(): void {
+    setApplicantsJobPost(null);
+  }
+
   useEffect(() => {
     fetchJobPosts();
   }, []);
@@ -95,6 +106,7 @@ export function JobPostsPage(): React.ReactElement {
           isLoading={isLoading}
           onCardClick={handleCardClick}
           onStatusChange={handleStatusChange}
+          onViewApplicants={handleViewApplicants}
         />
       </div>
 
@@ -108,6 +120,12 @@ export function JobPostsPage(): React.ReactElement {
         jobPost={selectedJobPost}
         onClose={handleDetailModalClose}
         onStatusChange={handleStatusChange}
+        onViewApplicants={handleViewApplicants}
+      />
+
+      <ApplicantsModal
+        jobPost={applicantsJobPost}
+        onClose={handleApplicantsModalClose}
       />
     </div>
   );
