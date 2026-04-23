@@ -5,6 +5,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -26,6 +27,7 @@ interface JobPostDetailModalProps {
   jobPost: JobPost | null;
   onClose: () => void;
   onStatusChange: (id: string, newStatus: JobPostStatus) => void;
+  onViewApplicants: (jobPost: JobPost) => void;
 }
 
 interface DetailRowProps {
@@ -50,6 +52,7 @@ export function JobPostDetailModal({
   jobPost,
   onClose,
   onStatusChange,
+  onViewApplicants,
 }: JobPostDetailModalProps): React.ReactElement {
   return (
     <Dialog open={jobPost !== null} onOpenChange={(open) => !open && onClose()}>
@@ -128,9 +131,18 @@ export function JobPostDetailModal({
               </Select>
             </div>
 
-            <p className="text-xs text-muted-foreground pt-4 border-t border-border/50">
-              Posted on {formatDate(jobPost.createdAt)}
-            </p>
+            <div className="flex items-center justify-between pt-4 border-t border-border/50">
+              <p className="text-xs text-muted-foreground">
+                Posted on {formatDate(jobPost.createdAt)}
+              </p>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onViewApplicants(jobPost)}
+              >
+                View Applicants
+              </Button>
+            </div>
           </>
         )}
       </DialogContent>
