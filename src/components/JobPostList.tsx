@@ -6,6 +6,7 @@ interface JobPostListProps {
   isLoading: boolean;
   onCardClick: (jobPost: JobPost) => void;
   onStatusChange: (id: string, newStatus: JobPostStatus) => void;
+  onViewApplicants: (jobPost: JobPost) => void;
 }
 
 function LoadingState(): React.ReactElement {
@@ -44,6 +45,7 @@ export function JobPostList({
   isLoading,
   onCardClick,
   onStatusChange,
+  onViewApplicants,
 }: JobPostListProps): React.ReactElement {
   if (isLoading) {
     return (
@@ -72,6 +74,7 @@ export function JobPostList({
           jobPost={jobPost}
           onClick={onCardClick}
           onStatusChange={onStatusChange}
+          onViewApplicants={onViewApplicants}
         />
       ))}
     </section>
